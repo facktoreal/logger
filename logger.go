@@ -13,10 +13,6 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-var (
-	env = os.Getenv("ENV")
-)
-
 // ContextHandler is our base context handler, it will handle all requests
 type ContextHandler struct {
 	slog.Handler
@@ -144,7 +140,7 @@ func Replacer(groups []string, a slog.Attr) slog.Attr {
 }
 
 func Errorf(ctx context.Context, format string, args ...interface{}) {
-	if env == "dev" {
+	if os.Getenv("ENV") == "dev" {
 		log.Errorf(format, args...)
 		return
 	}
@@ -153,7 +149,7 @@ func Errorf(ctx context.Context, format string, args ...interface{}) {
 }
 
 func Infof(ctx context.Context, format string, args ...interface{}) {
-	if env == "dev" {
+	if os.Getenv("ENV") == "dev" {
 		log.Infof(format, args...)
 		return
 	}
@@ -162,7 +158,7 @@ func Infof(ctx context.Context, format string, args ...interface{}) {
 }
 
 func Warnf(ctx context.Context, format string, args ...interface{}) {
-	if env == "dev" {
+	if os.Getenv("ENV") == "dev" {
 		log.Warnf(format, args...)
 		return
 	}
@@ -171,7 +167,7 @@ func Warnf(ctx context.Context, format string, args ...interface{}) {
 }
 
 func Debugf(ctx context.Context, format string, args ...interface{}) {
-	if env == "dev" {
+	if os.Getenv("ENV") == "dev" {
 		log.Debugf(format, args...)
 		return
 	}
