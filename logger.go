@@ -5,10 +5,16 @@ import (
 	"fmt"
 	"log/slog"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/log"
+)
+
+var (
+	env = os.Getenv("ENV")
 )
 
 // ContextHandler is our base context handler, it will handle all requests
@@ -138,9 +144,37 @@ func Replacer(groups []string, a slog.Attr) slog.Attr {
 }
 
 func Errorf(ctx context.Context, format string, args ...interface{}) {
+	if env == "dev" {
+		log.Errorf(format, args...)
+		return
+	}
+
 	slog.ErrorContext(ctx, fmt.Sprintf(format, args...))
 }
 
 func Infof(ctx context.Context, format string, args ...interface{}) {
+	if env == "dev" {
+		log.Infof(format, args...)
+		return
+	}
+
 	slog.InfoContext(ctx, fmt.Sprintf(format, args...))
+}
+
+func Warnf(ctx context.Context, format string, args ...interface{}) {
+	if env == "dev" {
+		log.Warnf(format, args...)
+		return
+	}
+
+	slog.WarnContext(ctx, fmt.Sprintf(format, args...))
+}
+
+func Debugf(ctx context.Context, format string, args ...interface{}) {
+	if env == "dev" {
+		log.Debugf(format, args...)
+		return
+	}
+
+	slog.DebugContext(ctx, fmt.Sprintf(format, args...))
 }
